@@ -196,3 +196,17 @@ footer{text-align:center;margin:34px 0 22px 0;color:#0008;font-size:15px;}
   .open-btn .btn:active{filter:brightness(.93);}
   .avatar:active{filter:brightness(.93);}
 }
+.music-error {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 14px;
+  color: #e74c3c;
+  z-index: 100;
+  max-width: 200px;
+  display: none;
+}

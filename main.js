@@ -138,7 +138,7 @@ const quotes=[
   '愿此刻如樱，岁岁年年。'
 ];
 const q=document.getElementById('quote');
-q.addEventListener('click',()=>{q.textContent='“'+quotes[Math.floor(Math.random()*quotes.length)]+'”';});
+q.addEventListener('click',()=>{q.textContent='"'+quotes[Math.floor(Math.random()*quotes.length)]+'"';});
 
 // 音乐播放器优化
 const audio=document.getElementById('audio');
@@ -146,8 +146,31 @@ const player=document.getElementById('player');
 const icon=player.querySelector('i');
 const ring=document.getElementById('music-progress');
 const musicTitle=document.getElementById('music-title');
+const musicError = document.getElementById('music-error');
 let raf=null;
 const circ=2*Math.PI*24; // 24为svg圆半径
+
+// 添加音频错误处理
+audio.addEventListener('error', function(e) {
+  console.error('音频加载错误:', e);
+  showMusicError('音乐加载失败，请检查网络或文件路径');
+});
+
+// 添加音频加载成功事件
+audio.addEventListener('canplay', function() {
+  hideMusicError();
+});
+
+function showMusicError(message) {
+  musicError.textContent = message;
+  musicError.style.display = 'block';
+  setTimeout(hideMusicError, 5000);
+}
+
+function hideMusicError() {
+  musicError.style.display = 'none';
+}
+
 function updateProgress(){
   if(audio.duration){
     const percent=audio.currentTime/audio.duration;
@@ -155,13 +178,35 @@ function updateProgress(){
   }
   raf=requestAnimationFrame(updateProgress);
 }
+
 function playToggle(){
   if(audio.paused){
-    audio.play();
-    icon.className='fa-solid fa-pause';
-    player.classList.add('playing');
-    musicTitle.style.opacity=1;
-    updateProgress();
+    // 尝试播放音乐
+    const playPromise = audio.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // 自动播放成功
+        icon.className='fa-solid fa-pause';
+        player.classList.add('playing');
+        musicTitle.style.opacity=1;
+        updateProgress();
+      }).catch(error => {
+        // 自动播放失败，需要用户交互
+        showMusicError('请点击页面任意位置后再次尝试播放');
+        // 添加一次性全局点击事件处理
+        document.body.addEventListener('click', function globalClick() {
+          audio.play().then(() => {
+            icon.className='fa-solid fa-pause';
+            player.classList.add('playing');
+            musicTitle.style.opacity=1;
+            updateProgress();
+          });
+          // 移除事件监听器，避免重复绑定
+          document.body.removeEventListener('click', globalClick);
+        }, { once: true });
+      });
+    }
   }else{
     audio.pause();
     icon.className='fa-solid fa-play';
@@ -184,10 +229,17 @@ player.addEventListener('touchstart',function(e){
 player.addEventListener('touchend',function(e){
   if(this.longpressTimer)clearTimeout(this.longpressTimer);
 });
+
 // 自动还原
 audio.addEventListener('ended',()=>{
   icon.className='fa-solid fa-play';
   player.classList.remove('playing');
   musicTitle.style.opacity=0;
   ring.style.strokeDashoffset = circ;
+});
+
+// 添加加载事件，尝试预加载音乐但不自动播放
+window.addEventListener('load', function() {
+  // 只预加载但不自动播放
+  audio.load();
 });

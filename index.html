@@ -44,7 +44,7 @@
           <div class="name">小瑶</div>
         </div>
       </section>
-      <section class="quote" id="quote">“樱花落满肩，你是心头欢。”</section>
+      <section class="quote" id="quote">"樱花落满肩，你是心头欢。"</section>
       <article class="letter" id="letter">
         亲爱的婧仪：<br><br>
         遇见你，是我生命里最绚烂的樱花季。愿我们把每一天，都过成只属于我们的节日。<br>
@@ -64,10 +64,13 @@
     <div class="btn"><i class="fa-solid fa-play"></i></div>
     <div class="music-title" id="music-title">Chopin - Nocturne</div>
     <audio id="audio" preload="auto" loop>
+      <!-- 如果music.mp3不存在，使用备用的在线音乐 -->
       <source src="music.mp3" type="audio/mpeg" />
       <source src="https://upload.wikimedia.org/wikipedia/commons/4/47/Nocturne_in_E-flat_major%2C_Op._9%2C_No._2_%28F._Chopin%29.ogg" type="audio/ogg" />
     </audio>
   </div>
+  <!-- 错误提示 -->
+  <div class="music-error" id="music-error"></div>
   <!-- 提示弹窗 -->
   <div id="modal">
     <div>
