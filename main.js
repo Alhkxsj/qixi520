@@ -83,11 +83,10 @@ title.addEventListener('click',()=>{
   }
 });
 
-// 双击背景：樱花瓣飘落
+// 双击背景：樱花瓣飘落 - 使用CSS样式而不是外部图片
 document.body.addEventListener('dblclick',(e)=>{
   for(let i=0;i<10;i++){
-    const s=document.createElement('img');
-    s.src='https://img1.imgtp.com/2023/08/28/9EoH3Z6K.png';
+    const s=document.createElement('div');
     s.className='sakura-float';
     s.style.left=(e.clientX+Math.random()*50-30)+'px';
     s.style.top=(e.clientY+Math.random()*20-10)+'px';
@@ -153,7 +152,18 @@ const circ=2*Math.PI*24; // 24为svg圆半径
 // 添加音频错误处理
 audio.addEventListener('error', function(e) {
   console.error('音频加载错误:', e);
-  showMusicError('音乐加载失败，请检查网络或文件路径');
+  showMusicError('音乐加载失败，尝试使用备用音乐源...');
+  // 尝试加载备用音乐源
+  setTimeout(() => {
+    if (audio.error) {
+      // 如果仍有错误，切换到在线音乐
+      audio.src = "https://assets.mixkit.co/music/preview/mixkit-spirit-of-the-east-528.mp3";
+      audio.load();
+      audio.play().catch(e => {
+        showMusicError('音乐播放失败，请点击页面后重试');
+      });
+    }
+  }, 1000);
 });
 
 // 添加音频加载成功事件
@@ -201,6 +211,8 @@ function playToggle(){
             player.classList.add('playing');
             musicTitle.style.opacity=1;
             updateProgress();
+          }).catch(e => {
+            showMusicError('播放失败，请检查音频文件');
           });
           // 移除事件监听器，避免重复绑定
           document.body.removeEventListener('click', globalClick);
@@ -242,4 +254,23 @@ audio.addEventListener('ended',()=>{
 window.addEventListener('load', function() {
   // 只预加载但不自动播放
   audio.load();
+});
+
+// 添加用户交互后自动播放音乐的逻辑
+let userInteracted = false;
+document.addEventListener('click', function() {
+  if (!userInteracted) {
+    userInteracted = true;
+    // 用户首次交互后尝试播放音乐
+    if (audio.paused) {
+      audio.play().then(() => {
+        icon.className='fa-solid fa-pause';
+        player.classList.add('playing');
+        musicTitle.style.opacity=1;
+        updateProgress();
+      }).catch(e => {
+        // 静默处理错误，等待用户点击播放按钮
+      });
+    }
+  }
 });

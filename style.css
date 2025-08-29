@@ -127,7 +127,7 @@ footer{text-align:center;margin:34px 0 22px 0;color:#0008;font-size:15px;}
 }
 @keyframes playerPulse{
   0%{box-shadow:0 0 0 0 #ffb7d525,0 6px 32px 0 #ffb7d53a;}
-  100%{box-shadow:0 0 12px 8px #ffb7d525,0 6px 32px 0 #ffb7d53a;}
+ 100%{box-shadow:0 0 12px 8px #ffb7d525,0 6px 32px 0 #ffb7d53a;}
 }
 .player .btn{
   position:absolute;left:12px;top:12px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
@@ -165,10 +165,17 @@ footer{text-align:center;margin:34px 0 22px 0;color:#0008;font-size:15px;}
   animation:ribbon-fall 1.2s cubic-bezier(.7,.1,.5,1) forwards;z-index:99;}
 @keyframes ribbon-fall{to{transform:translateY(60px) scaleX(.7) rotateZ(40deg);opacity:0;}}
 @keyframes floatUp{to{transform:translateY(-130px) scale(1.26) rotate(45deg);opacity:0}}
-.sakura-float{position:fixed;width:30px;height:30px;pointer-events:none;z-index:99;
-  animation:sakuraFloat 2.7s linear forwards;opacity:.96;}
-@keyframes sakuraFloat{0%{transform:translateY(0) rotate(0deg) scale(.8);}
-  80%{opacity:.92;}100%{transform:translateY(220px) rotate(140deg) scale(1.12);opacity:0;}
+.sakura-float{
+  position:fixed;width:30px;height:30px;pointer-events:none;z-index:99;
+  animation:sakuraFloat 2.7s linear forwards;opacity:.96;
+  background:radial-gradient(circle 12px at 10px 10px,#fff6 60%,transparent 90%),
+             linear-gradient(135deg,var(--sakura-pink) 75%,#fff0 100%);
+  border-radius:60% 45% 60% 45% / 55% 60% 45% 60%;
+}
+@keyframes sakuraFloat{
+  0%{transform:translateY(0) rotate(0deg) scale(.8);}
+  80%{opacity:.92;}
+  100%{transform:translateY(220px) rotate(140deg) scale(1.12);opacity:0;}
 }
 @media (max-width:800px){
   .container{padding:0 3vw 0 3vw;}

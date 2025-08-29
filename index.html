@@ -62,11 +62,12 @@
       <circle id="music-progress" cx="28" cy="28" r="24" fill="none" stroke="#ffb7d5" stroke-width="6" stroke-linecap="round" stroke-dasharray="150.72" stroke-dashoffset="150.72"/>
     </svg>
     <div class="btn"><i class="fa-solid fa-play"></i></div>
-    <div class="music-title" id="music-title">Chopin - Nocturne</div>
+    <div class="music-title" id="music-title">七夕专属音乐</div>
     <audio id="audio" preload="auto" loop>
-      <!-- 如果music.mp3不存在，使用备用的在线音乐 -->
       <source src="music.mp3" type="audio/mpeg" />
-      <source src="https://upload.wikimedia.org/wikipedia/commons/4/47/Nocturne_in_E-flat_major%2C_Op._9%2C_No._2_%28F._Chopin%29.ogg" type="audio/ogg" />
+      <source src="music.ogg" type="audio/ogg" />
+      <!-- 备用音乐源 -->
+      <source src="https://assets.mixkit.co/music/preview/mixkit-spirit-of-the-east-528.mp3" type="audio/mpeg" />
     </audio>
   </div>
   <!-- 错误提示 -->
